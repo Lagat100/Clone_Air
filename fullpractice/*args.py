@@ -24,3 +24,13 @@ def some_args(arg_1, arg_2, arg_3):
 
 args = ("Sammy", "Casey", "Alex")
 some_args(*args)
+
+def some_args(arg_1, arg_2, arg_3):
+    """ We can also modify the program above to an iterable list data type with a 
+    different variable name.Lets also combine the *args syntax with a named parameter:"""
+    print("arg_1:", arg_1)
+    print("arg_2:", arg_2)
+    print("arg_3:", arg_3)
+
+my_list = [2, 3]
+some_args(1, *my_list)
