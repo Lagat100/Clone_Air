@@ -24,3 +24,12 @@ print_values(
             name_5="Remy",
             name_6="Val"
         )
+
+def some_kwargs(kwarg_1, kwarg_2, kwarg_3):
+    """ Here we are using the **kwargs to call a function"""
+    print("kwarg_1:", kwarg_1)
+    print("kwarg_2:", kwarg_2)
+    print("kwarg_3:", kwarg_3)
+
+kwargs = {"kwarg_1": "Val", "kwarg_2": "Harper", "kwarg_3": "Remy"}
+some_kwargs(**kwargs)
