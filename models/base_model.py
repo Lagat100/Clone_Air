@@ -1,52 +1,39 @@
-#!/usr/bin/python3
-"""BaseModel module, Parent class for all classes"""
-from uuid import uuid4
+import uuid
 from datetime import datetime
+from models.__init__ import storage
 import models
 
-
 class BaseModel:
-    """BaseModel class - template for all other classes"""
-    def __init__(self, *args, **kwargs):
-        """Initialize attributes: random uuid, dates created/updated
-        """
-        if kwargs:
-            for key, val, in kwargs.items():
-                if "created_at" == key:
-                    self.created_at = datetime.strptime(kwargs["created_at"],
-                        "%Y-%m-%dT%H:%M:%S.%f")
-                elif "updated_at" == key:
-                    self.updated_at = datetime.strptime(kwargs["updated_at"],
-                        "%Y-%m-%dT%H:%M:%S.%f")
-                elif "__class__" == key:
-                    pass
-                else:
-                    setattr(self, key, val)
-
-        else:
-            self.id = str(uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-            models.storage.new(self)
+    def __init__(self):
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = self.created_at
 
     def __str__(self):
-        """prints a string rep of class name, id, and dictionary"""
-        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
-        """Updates instance 'updated_at' with updated time and saves to a serialized file
-        """
         self.updated_at = datetime.now()
-        models.storage.save()
 
     def to_dict(self):
-        """Return dict with string formats of times;add class info to dict
-        """
-        dict = {}
-        dict["__class__"] = self.__class__.__name__
-        for k, v in self.__dict__.items():
-            if isinstance(v, (datetime, )):
-                dict[k] = v.isoformat()
-            else:
-                dict[k] = v
-        return dict
+        obj_dict = self.__dict__.copy()
+        obj_dict['__class__'] = self.__class__.__name__
+        obj_dict['created_at'] = self.created_at.isoformat()
+        obj_dict['updated_at'] = self.updated_at.isoformat()
+        return obj_dict
+    
+    def __init__(self, *args, **kwargs):
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == 'created_at' or key == 'updated_at':
+                    setattr(self, key, datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f'))
+                else:
+                    setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
+
+    def save(self):
+        self.updated_at = datetime.now()
+        storage.save()        
