@@ -1,6 +1,6 @@
 import cmd
 import json
-from models.__init__ import storage
+from models.engine.file_storage import FileStorage
 from models.user import User
 from models.state import State
 from models.city import City
@@ -49,10 +49,10 @@ class HBNBCommand(cmd.Cmd):
             return
         obj_id = args[1]
         key = "{}.{}".format(class_name, obj_id)
-        if key not in storage.all():
+        if key not in FileStorage.all():
             print("** no instance found **")
             return
-        print(storage.all()[key])
+        print(FileStorage.all()[key])
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id"""
@@ -69,11 +69,11 @@ class HBNBCommand(cmd.Cmd):
             return
         obj_id = args[1]
         key = "{}.{}".format(class_name, obj_id)
-        if key not in storage.all():
+        if key not in FileStorage.all():
             print("** no instance found **")
             return
-        del storage.all()[key]
-        storage.save()
+        del FileStorage.all()[key]
+        FileStorage.save()
 
     def do_all(self, arg):
         """Prints all string representations of all instances"""
@@ -103,7 +103,7 @@ class HBNBCommand(cmd.Cmd):
             return
         obj_id = args[1]
         key = "{}.{}".format(class_name, obj_id)
-        if key not in storage.all():
+        if key not in FileStorage.all():
             print("** no instance found **")
             return
         if len(args) < 3:
@@ -114,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
             return
         attribute_name = args[2]
         attribute_value = args[3]
-        obj = storage.all()[key]
+        obj = FileStorage.all()[key]
         setattr(obj, attribute_name, attribute_value)
         obj.save()
 
@@ -146,10 +146,10 @@ class HBNBCommand(cmd.Cmd):
             return
         obj_id = args[1]
         key = "{}.{}".format(class_name, obj_id)
-        if key not in storage.all():
+        if key not in FileStorage.all():
             print("** no instance found **")
             return
-        print(storage.all()[key])
+        print(FileStorage.all()[key])
 
     def do_destroy_id(self, arg):
         """Deletes an instance based on its ID"""
@@ -166,11 +166,11 @@ class HBNBCommand(cmd.Cmd):
             return
         obj_id = args[1]
         key = "{}.{}".format(class_name, obj_id)
-        if key not in storage.all():
+        if key not in FileStorage.all():
             print("** no instance found **")
             return
-        del storage.all()[key]
-        storage.save()
+        del FileStorage.all()[key]
+        FileStorage.save()
 
     def do_update_id(self, arg):
         """Updates an instance based on its ID"""
@@ -187,7 +187,7 @@ class HBNBCommand(cmd.Cmd):
             return
         obj_id = args[1]
         key = "{}.{}".format(class_name, obj_id)
-        if key not in storage.all():
+        if key not in FileStorage.all():
             print("** no instance found **")
             return
         if len(args) < 4:
@@ -195,7 +195,7 @@ class HBNBCommand(cmd.Cmd):
             return
         attribute_name = args[2]
         attribute_value = args[3]
-        obj = storage.all()[key]
+        obj = FileStorage.all()[key]
         setattr(obj, attribute_name, attribute_value)
         obj.save()
 
@@ -214,7 +214,7 @@ class HBNBCommand(cmd.Cmd):
             return
         obj_id = args[1]
         key = "{}.{}".format(class_name, obj_id)
-        if key not in storage.all():
+        if key not in FileStorage.all():
             print("** no instance found **")
             return
         if len(args) < 3:
@@ -225,7 +225,7 @@ class HBNBCommand(cmd.Cmd):
         except ValueError:
             print("** invalid dictionary representation **")
             return
-        obj = storage.all()[key]
+        obj = FileStorage.all()[key]
         for attr, value in attr_dict.items():
             setattr(obj, attr, value)
         obj.save()
